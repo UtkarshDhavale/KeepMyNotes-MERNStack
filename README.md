@@ -1,1 +1,1 @@
-# KeepMyNotes-MERNStack
+# KeepMyNotes - MERN Stack Application
