@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const mongoUrl = "mongodb://localhost:27017/?directConnection=true";
+const mongoUrl = "mongodb://localhost:27017/Notebook?directConnection=true";
 
 const connectToMongo = ()=>{
     mongoose.connect(mongoUrl,()=>{
