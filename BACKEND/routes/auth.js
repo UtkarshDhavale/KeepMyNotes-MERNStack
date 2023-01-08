@@ -4,8 +4,10 @@ const User = require('../models/User');
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const JWT_TOKEN = 'shhhh';
-//Create User - Post : /api/auth/createuser - No Login Required
+const fetchuser = require('../middleware/fetchuser');
+const JWT_SECRET = 'shhhh';
+
+//Route1: Create User - Post : /api/auth/createuser - No Login Required
 router.post('/createuser',
     body('name','Enter a valid Name').isLength({ min: 3 }),
     body('email','Enter a valid Email').isEmail(),
@@ -40,7 +42,7 @@ router.post('/createuser',
                 }
             }
 
-            var authtoken = jwt.sign(data,JWT_TOKEN);
+            var authtoken = jwt.sign(data,JWT_SECRET);
             res.json({authToken: authtoken});
         }
         catch(error){
@@ -50,7 +52,7 @@ router.post('/createuser',
     })
 
 
-//Login - Post : /api/auth/login
+//Route2: Authenticate User - Post : /api/auth/login
     router.post('/login',
     body('email','Please enter valid email').isEmail(),
     body('password','Password should not be blank').exists(),
@@ -78,7 +80,7 @@ router.post('/createuser',
                 }
             }
 
-            var authtoken = jwt.sign(data,JWT_TOKEN);
+            var authtoken = jwt.sign(data,JWT_SECRET);
             res.json({authToken: authtoken});
 
         }
@@ -87,5 +89,18 @@ router.post('/createuser',
             res.status(500).send("Something Went Wrong!!");
         }
     })
+
+//Route2: get User details using authToken - Post : /api/auth/getuser
+router.post('/getuser',fetchuser,async (req,res)=>{  
+    try{
+        let userId = req.user.id;
+        const user = await User.findById(userId).select('-password');
+        res.json(user);
+    }
+    catch(error){
+        console.error(error.message);
+        res.status(500).send("Something Went Wrong!!");
+    }
+})
 
 module.exports = router;
