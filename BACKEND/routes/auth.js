@@ -16,7 +16,7 @@ router.post('/createuser',
         //If there are an errors, send bad request and error messages
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({ errors: errors.array() });
         }
 
         try{
@@ -90,7 +90,7 @@ router.post('/createuser',
         }
     })
 
-//Route2: get User details using authToken - Post : /api/auth/getuser
+//Route3: get User details using authToken - Post : /api/auth/getuser
 router.post('/getuser',fetchuser,async (req,res)=>{  
     try{
         let userId = req.user.id;
