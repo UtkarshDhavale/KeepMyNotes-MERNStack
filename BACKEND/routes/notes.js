@@ -46,7 +46,7 @@ router.post('/addenote',fetchuser,
     }
 })
 
-//route 3: Update notes Post- 
+//route 3: Update notes Post- /api/notes/updatenote/:id
 router.put('/updatenote/:id',fetchuser,async (req, res) => {
     try {
         const { title, description, tag } = req.body;
@@ -64,6 +64,26 @@ router.put('/updatenote/:id',fetchuser,async (req, res) => {
 
         note = await Notes.findByIdAndUpdate(req.params.id,{$set:newnote},{new:true});
         res.json({note});
+
+    }
+    catch (error) {
+        console.error(error.message);
+        res.status(500).send("Something Went Wrong!!");
+    }
+}) 
+
+//route 3: Delete notes Post - /api/notes/deletenote/:id 
+router.put('/deletenote/:id',fetchuser,async (req, res) => {
+    try {
+
+        let note = await Notes.findById(req.params.id);
+
+        if(!note){res.status(404).send("Id Not Found");}
+
+        if(note.user.toString()!==req.user.id){res.status(401).send("Unauthorized");}
+
+        note = await Notes.findByIdAndDelete(req.params.id);
+        res.json({"Success":"Note has been deleted"});
 
     }
     catch (error) {
