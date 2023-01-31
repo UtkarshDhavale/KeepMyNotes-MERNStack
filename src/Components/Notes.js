@@ -9,7 +9,7 @@ function Notes() {
         <div className="row my-3">
             <h3>Your Notes</h3>
             {notes.map((note) => {
-                return <NoteItem note={note}/>
+                return <NoteItem key={note._id} note={note}/>
             })}
         </div>
     )
