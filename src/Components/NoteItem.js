@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import context from '../Context-Notes/noteContext';
 
 function NoteItem(props) {
@@ -11,7 +11,7 @@ function NoteItem(props) {
                         <h5 className="card-title">{props.note.title}</h5>
                         <p className="card-text">{props.note.description}</p>
                         <i className="fa-solid fa-trash" onClick={()=>{return deleteNote(props.note._id)}}></i>
-                        <i className="fa-solid fa-pen-to-square mx-3"></i>
+                        <i className="fa-solid fa-pen-to-square mx-3" onClick={()=>{props.updateNote(props.note)}}></i>
                     </div>
             </div>
         </div>
