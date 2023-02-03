@@ -1,12 +1,19 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import context from '../Context-Notes/noteContext';
 import NoteItem from './NoteItem';
+import { useNavigate } from 'react-router-dom';
 
 function Notes() {
     const { notes, fetchNotes, editNote } = useContext(context);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        fetchNotes();
+        if(localStorage.getItem("authToken")){
+            fetchNotes();
+        }
+        else{
+            navigate('/login');
+        }
     });
 
     const ref = useRef(null);
@@ -21,7 +28,6 @@ function Notes() {
     }
 
     const handleOnClick=(e)=>{
-        console.log("Click",note);
         editNote(note.eid,note.etitle,note.edescription,note.etag);
         refClose.current.click();
     };
