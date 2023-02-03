@@ -16,14 +16,16 @@ router.post('/createuser',
         //If there are an errors, send bad request and error messages
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            success=false;
+            return res.status(400).json({success:success,errors: errors.array() });
         }
 
         try{
             let user = await User.findOne({email: req.body.email});
 
             if(user){
-                return res.status(400).json({ error: "Email already Exist" });
+                success=false;
+                return res.status(400).json({success:success,error: "Email already Exist" });
             }
         
             const salt = await bcrypt.genSalt(10);
@@ -43,10 +45,11 @@ router.post('/createuser',
             }
 
             var authtoken = jwt.sign(data,JWT_SECRET);
-            res.json({authToken: authtoken});
+            success = true;
+            res.json({success:success,authToken: authtoken});
         }
         catch(error){
-            console.error(error.message);
+            success = false;
             res.status(500).send("Something Went Wrong!!");
         }
     })

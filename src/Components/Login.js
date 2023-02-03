@@ -24,7 +24,6 @@ function Login() {
         else{
             alert("Invalid Credential");
         }
-    
     }
 
     const handleOnChange=(e)=>{
@@ -36,11 +35,11 @@ function Login() {
             <form className="container" onSubmit={handleOnSubmit}>
                 <div className="form-group my-2">
                     <label htmlFor="email">Email address</label>
-                    <input type="email" className="form-control" id="email" name="email" value={credential.email} onChange={handleOnChange} aria-describedby="emailHelp" placeholder="Enter email"/>
+                    <input type="email" className="form-control" id="email" name="email" value={credential.email} onChange={handleOnChange} aria-describedby="emailHelp" placeholder="Enter email" minLength={5} required/>
                 </div>
                 <div className="form-group my-2">
                     <label htmlFor="password">Password</label>
-                    <input type="password" className="form-control" id="password" name="password" value={credential.password} onChange={handleOnChange} placeholder="Password"/>
+                    <input type="password" className="form-control" id="password" name="password" value={credential.password} onChange={handleOnChange} placeholder="Password" minLength={5} required/>
                 </div>
                 <button type="submit" className="btn btn-primary">Submit</button>
             </form>
