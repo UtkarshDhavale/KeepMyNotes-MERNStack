@@ -66,12 +66,14 @@ router.post('/createuser',
         try{
             let user = await User.findOne({email});
             if(!user){
-                return res.status(400).json({ error: "Please enter valid credential" });
+                success=false;
+                return res.status(400).json({success:success, error: "Please enter valid credential" });
             }
 
             const comparepassward = await bcrypt.compare(password,user.password);
             if(!comparepassward){
-                return res.status(400).json({ error: "Please enter valid credential" });
+                success=false;
+                return res.status(400).json({success:success, error: "Please enter valid credential" });
             }
 
             const data = {
@@ -79,13 +81,14 @@ router.post('/createuser',
                     id:user.id
                 }
             }
-
             var authtoken = jwt.sign(data,JWT_SECRET);
-            res.json({authToken: authtoken});
+            success=true;
+            res.json({success:success,authToken: authtoken});
 
         }
         catch(error){
             console.error(error.message);
+            success=false;
             res.status(500).send("Something Went Wrong!!");
         }
     })
